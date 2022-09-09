@@ -1,3 +1,14 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  scope "(:locale)", locale: /en|vi/ do
+    root "static_pages#home"
+    get "/help", to: "static_pages#help"
+    get "/signup", to: "users#new"
+    post "/signup", to: "users#create"
+    resources :users, only: %i(new create show)
+    resources :soccer_fields, only: %i(index show)
+    namespace :admin do
+      get "static_pages/home"
+      get "static_pages/help"
+    end
+  end
 end
